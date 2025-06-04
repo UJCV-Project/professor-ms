@@ -1,0 +1,33 @@
+services:
+  api:
+    build: .
+    ports:
+      - "17502:17502"
+    environment:
+      - DATABASE_URL=postgresql://postgres:example@postgres:5432/professor?schema=public
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npx prisma generate &&
+        npx prisma migrate deploy &&
+        node dist/main.js
+      "
+
+  postgres:
+    image: postgres:15
+    restart: always
+    ports:
+      - "5432:5432" 
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: professor-ms
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
