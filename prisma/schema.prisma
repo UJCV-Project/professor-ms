@@ -8,15 +8,35 @@ datasource db {
 }
 
 model Professor {
-  id          String     @id @default(uuid())
-  code        String     @unique @db.VarChar(20)
-  firstName   String     @db.VarChar(50)
-  lastName    String     @db.VarChar(50)
-  email       String     @unique
-  phoneNumber String     @db.VarChar(20)
-  status      ProfessorStatus @default(activo)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String           @id @default(uuid())
+  code        String           @unique @db.VarChar(20)
+  firstName   String           @db.VarChar(50)
+  lastName    String           @db.VarChar(50)
+  email       String           @unique
+  phoneNumber String           @db.VarChar(20)
+  status      ProfessorStatus  @default(activo)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  availabilities Availability[]
+
+
+  @@index([code, status])
+}
+
+model Availability {
+  id          String       @id @default(uuid())
+  professor   Professor @relation(fields: [professorId], references: [id])
+  professorId String
+
+  dayOfWeek   Int       
+  startTime   Int
+  endTime     Int
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([professorId, dayOfWeek])
 }
 
 enum ProfessorStatus {
