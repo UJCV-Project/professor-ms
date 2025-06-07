@@ -5,7 +5,7 @@ import { IsInt, Min, Max } from 'class-validator';
 export class AvailabilityDto {
   @IsString()
   @IsNotEmpty()
-  professor: string;
+  professorId: string;
 
   @IsArray()
   @ValidateNested({ each: true })

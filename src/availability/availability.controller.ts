@@ -5,17 +5,16 @@ import { AvailabilityDto } from './dto/availability.dto';
 
 @Controller()
 export class AvailabilityController {
-  constructor(private readonly availabilityService: AvailabilityService) {}
+  constructor(private readonly availabilityService: AvailabilityService) { }
 
-  @MessagePattern('findAvailabilityById')
-  findAvailabilitySchedule(@Payload() id: string) {
-    return this.availabilityService.findAvailabilitySchedule(id);
+
+  @MessagePattern({ cmd: 'findAvailabilityById' })
+  findAvailabilitySchedule(@Payload() professorId: string) {
+    return this.availabilityService.findAvailabilitySchedule(professorId);
   }
 
-  @MessagePattern('updateAvailabilitySchedule')
-  updateAvailabilitySchedule(@Payload() availabilitySlots: AvailabilityDto) {
-    return this.availabilityService.updateAvailabilitySchedule(availabilitySlots);
+  @MessagePattern({ cmd: 'saveAvailabilitySchedule' })
+  saveAvailabilitySchedule(@Payload() availabilitySlots: AvailabilityDto) {
+    return this.availabilityService.saveAvailabilitySchedule(availabilitySlots);
   }
-
-
 }
